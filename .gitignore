@@ -1,0 +1,17 @@
+# Python
+__pycache__/
+*.py[cod]
+
+# Virtual environment
+.venv/
+
+# IDE
+.idea/
+*.iml
+.vscode/
+
+# Streamlit
+.streamlit/
+
+# Logs
+*.log
