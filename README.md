@@ -46,15 +46,9 @@ uv run streamlit run main.py
 ```
 
 ## Screenshots
-![AI Resume Critiquer](assets/Resume Critique Results 1.png)
-![AI Resume Critiquer](assets/Resume Critique Results 2.png)
-![AI Resume Critiquer](assets/Resume Critique Results 3.png)
+![AI Resume Critiquer](assets/Resume%20Critique%20Results%201.png)
 
+![AI Resume Critiquer](assets/Resume%20Critique%20Results%202.png)
 
-## Future Improvements
+![AI Resume Critiquer](assets/Resume%20Critique%20Results%203.png)
 
-- Resume ATS scoring
-- Job description matching
-- Support for DOCX resumes
-- Streaming AI responses
-- Multiple LLM model selection
