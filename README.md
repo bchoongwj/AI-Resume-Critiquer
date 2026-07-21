@@ -46,9 +46,16 @@ uv run streamlit run main.py
 ```
 
 ## Screenshots
-![AI Resume Critiquer](assets/Resume%20Critique%20Results%201.png)
+<h2 align="center">Screenshots</h2>
 
-![AI Resume Critiquer](assets/Resume%20Critique%20Results%202.png)
+<p align="center">
+  <img src="assets/resume-critique-results-1.png" width="800">
+</p>
 
-![AI Resume Critiquer](assets/Resume%20Critique%20Results%203.png)
+<p align="center">
+  <img src="assets/resume-critique-results-2.png" width="800">
+</p>
 
+<p align="center">
+  <img src="assets/resume-critique-results-3.png" width="800">
+</p>
