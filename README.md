@@ -46,16 +46,15 @@ uv run streamlit run main.py
 ```
 
 ## Screenshots
-<h2 align="center">Screenshots</h2>
 
 <p align="center">
-  <img src="assets/resume-critique-results-1.png" width="800">
+  <img src="assets/Resume%20Critique%20Results%201.png" width="800">
 </p>
 
 <p align="center">
-  <img src="assets/resume-critique-results-2.png" width="800">
+  <img src="assets/Resume%20Critique%20Results%202.png" width="800">
 </p>
 
 <p align="center">
-  <img src="assets/resume-critique-results-3.png" width="800">
+  <img src="assets/Resume%20Critique%20Results%203.png" width="800">
 </p>
