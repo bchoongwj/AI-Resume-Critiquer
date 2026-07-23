@@ -1,9 +1,11 @@
-# TO RUN: In terminal, make sure youre on correct path: uv run streamlit run main.py
+# TO RUN: In terminal, make sure youre on correct path: uv run python -m streamlit run main.py (OR if not using uv: python -m streamlit run main.py)
 # Anything page state changes, entire python file is re-rain again. But the state is saved. E.g. file uploaded -> entire script re-runs, but file is still stored in variable. Same with job_role
 # THIS IS NOT AN AI AGENT. We directly invoke LLM here
 
+
 import streamlit as st
 import PyPDF2
+from docx import Document
 from langchain_ollama import ChatOllama
 from langchain_core.messages import SystemMessage, HumanMessage
 
@@ -25,8 +27,8 @@ def create_ui():
     )
 
     uploaded_file = st.file_uploader(
-        "Upload your resume (PDF or TXT)",
-        type=["pdf", "txt"],
+        "Upload your resume (PDF, DOCX or TXT)",
+        type=["pdf", "docx", "txt"],
         accept_multiple_files=False
     )
 
@@ -42,6 +44,8 @@ def create_ui():
 def extract_text_from_file(file):
     if file.type == "application/pdf":
         return extract_text_from_pdf(file)
+    elif file.type == "application/vnd.openxmlformats-officedocument.wordprocessingml.document":
+        return extract_text_from_docx(file)
 
     # TXT files are read as bytes, then decoded into a normal string.
     return file.read().decode("utf-8")
@@ -60,6 +64,16 @@ def extract_text_from_pdf(pdf_file):
         text += (page.extract_text() or "") + "\n"
 
     return text
+
+def extract_text_from_docx(docx_file):
+    document = Document(docx_file)
+
+    text = []
+
+    for paragraph in document.paragraphs:
+        text.append(paragraph.text)
+
+    return "\n".join(text)
 
 
 def create_resume_prompt(resume_text, job_role):
