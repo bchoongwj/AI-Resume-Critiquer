@@ -118,5 +118,5 @@ The application will open automatically in your browser.
 ---
 
 ## License
-
+MIT
 This project is intended for learning and portfolio purposes.
