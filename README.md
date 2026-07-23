@@ -76,7 +76,8 @@ ollama serve
 ### Run the application
 
 ```bash
-uv run streamlit run main.py
+uv run python -m streamlit run main.py
+(OR if not using uv: python -m streamlit run main.py)
 ```
 
 The application will open automatically in your browser.
