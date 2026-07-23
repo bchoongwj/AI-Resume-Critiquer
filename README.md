@@ -4,7 +4,7 @@ A small side project I built while job hunting and learning more about local LLM
 
 AI Resume Critiquer is a resume analysis application built with **Python**, **Streamlit**, **LangChain**, and **Ollama**. It accepts PDF or TXT resumes and provides actionable feedback tailored to a target job role using a **locally hosted Large Language Model (LLM)**. Since inference runs locally through Ollama, no external AI APIs or API keys are required.
 
-PS: For a 6944 word resume, it took approximately 1236 tokens, and slightly under 2 minutes to process
+For reference: For a 6944 word resume, it took approximately 1236 tokens, and slightly under 2 minutes to process
 
 ---
 
