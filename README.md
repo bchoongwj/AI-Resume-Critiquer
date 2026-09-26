@@ -8,6 +8,8 @@ Inference runs on **`openai/gpt-oss-20b`**, a 20B-parameter open-weight model se
 
 For reference: a 636 word resume (826 tokens) takes roughly **5 seconds** to analyse.
 
+Test it out: https://smart-resume-critique.streamlit.app/
+
 ---
 
 ## Features
