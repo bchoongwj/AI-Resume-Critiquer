@@ -3,11 +3,20 @@
 # THIS IS NOT AN AI AGENT. We directly invoke LLM here
 
 
+import os
 import streamlit as st
 import PyPDF2
 from docx import Document
-from langchain_ollama import ChatOllama
+from dotenv import load_dotenv
+from langchain_huggingface import HuggingFaceEndpoint, ChatHuggingFace
 from langchain_core.messages import SystemMessage, HumanMessage
+
+load_dotenv()
+
+# Only this many words of the resume are sent to the LLM.
+# Keeps input token cost predictable regardless of resume length.
+MAX_RESUME_WORDS = 2000
+
 
 def setup_page():
     # Streamlit page configuration must happen before
@@ -30,6 +39,11 @@ def create_ui():
         "Upload your resume (PDF, DOCX or TXT)",
         type=["pdf", "docx", "txt"],
         accept_multiple_files=False
+    )
+
+    st.caption(
+        f"Only the first {MAX_RESUME_WORDS:,} words are analyzed. "
+        "Anything beyond that is ignored."
     )
 
     job_role = st.text_input(
@@ -76,6 +90,17 @@ def extract_text_from_docx(docx_file):
     return "\n".join(text)
 
 
+def truncate_to_word_limit(text, max_words=MAX_RESUME_WORDS):
+    # Returns the trimmed text plus the original word count, so the UI
+    # can tell the user when part of their resume was left out.
+    words = text.split()
+
+    if len(words) <= max_words:
+        return text, len(words), False
+
+    return " ".join(words[:max_words]), len(words), True
+
+
 def create_resume_prompt(resume_text, job_role):
     # If the user does not specify a role, provide general resume feedback.
     target = job_role if job_role else "general job applications"
@@ -97,7 +122,7 @@ Provide:
 - 3 weaknesses
 - 5 specific improvements
 
-Keep your response under 800 words.
+Keep your response under 400 words.
 """
 
 
@@ -105,13 +130,22 @@ Keep your response under 800 words.
 def get_llm():
     # Streamlit reruns the entire Python script whenever a widget changes.
     # cache_resource prevents recreating the LLM client every rerun.
-    return ChatOllama(
-        model="qwen3:4b",
-        temperature=0.7
+    endpoint = HuggingFaceEndpoint(
+        repo_id="openai/gpt-oss-20b",
+        provider="auto",
+        task="conversational",
+        huggingfacehub_api_token=os.getenv("HUGGINGFACEHUB_API_TOKEN"),
+        max_new_tokens=1500,
+        temperature=0.7,
     )
+    return ChatHuggingFace(llm=endpoint)
 
 
+@st.cache_data(show_spinner=False)
 def analyze_resume(resume_text, job_role):
+    # cache_data caches the RESULT, keyed by (resume_text, job_role).
+    # Re-analyzing the same resume for the same role costs nothing —
+    # no second API call, no second charge against your credit.
     llm = get_llm()
 
     # This application directly sends prompts to an LLM.
@@ -146,6 +180,17 @@ def handle_resume_analysis(uploaded_file, job_role):
             st.error("File does not contain readable text")
             return
 
+        resume_text, original_words, was_truncated = truncate_to_word_limit(
+            resume_text
+        )
+
+        if was_truncated:
+            st.warning(
+                f"Resume is {original_words:,} words — only the first "
+                f"{MAX_RESUME_WORDS:,} were analyzed."
+            )
+
+        st.write("Resume words:", min(original_words, MAX_RESUME_WORDS))
         st.write("Resume characters:", len(resume_text))
         st.write(
             "Approx tokens:",
