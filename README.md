@@ -6,7 +6,7 @@ AI Resume Critiquer is a resume analysis application built with **Python**, **St
 
 Inference runs on **`openai/gpt-oss-20b`**, a 20B-parameter open-weight model served through Hugging Face's Inference Providers router. The app originally ran on a locally hosted model via Ollama; it was migrated to Hugging Face so it could be deployed publicly without requiring users to run their own model.
 
-For reference: a 600 word resume takes roughly **15 seconds** to analyse.
+For reference: a 636 word resume (826 tokens) takes roughly **5 seconds** to analyse.
 
 ---
 
