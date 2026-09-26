@@ -18,6 +18,15 @@ load_dotenv()
 MAX_RESUME_WORDS = 2000
 
 
+def get_hf_token():
+    # Deployed on Streamlit Cloud there is no .env file — the token comes
+    # from the app's Secrets settings. Locally it comes from .env.
+    try:
+        return st.secrets["HUGGINGFACEHUB_API_TOKEN"]
+    except Exception:
+        return os.getenv("HUGGINGFACEHUB_API_TOKEN")
+
+
 def setup_page():
     # Streamlit page configuration must happen before
     # any UI elements are displayed.
@@ -134,7 +143,7 @@ def get_llm():
         repo_id="openai/gpt-oss-20b",
         provider="auto",
         task="conversational",
-        huggingfacehub_api_token=os.getenv("HUGGINGFACEHUB_API_TOKEN"),
+        huggingfacehub_api_token=get_hf_token(),
         max_new_tokens=1500,
         temperature=0.7,
     )
